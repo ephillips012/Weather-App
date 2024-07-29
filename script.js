@@ -5,6 +5,7 @@ const locationButton = document.querySelector(".location-btn");
 const currentWeatherDiv = document.querySelector(".current-weather");
 const weatherCardsDiv = document.querySelector(".weather-cards");
 const uvIndexSpan = document.getElementById('uv-index');
+const zipInput = document.querySelector(".zip-input");
 
 // Marine forecast selectors
 const currentWaveHeight = document.getElementById('current-wave-height');
@@ -39,6 +40,22 @@ const fetchWeatherFromWeatherGov = async (lat, lon) => {
     return data;
   } catch (error) {
     console.error('Error in fetchWeatherFromWeatherGov:', error);
+  }
+};
+
+// Fetch weather details by ZIP code
+const fetchWeatherByZipCode = async (zipCode) => {
+  const url = `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=${API_KEY}`;
+  try {
+    console.log(`Fetching weather details from URL: ${url}`);
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log('Weather details data:', data);
+    const { coord, name } = data;
+    getWeatherDetails(name, coord.lat, coord.lon);
+  } catch (error) {
+    console.error('Error in fetchWeatherByZipCode:', error);
+    alert("An error occurred while fetching the weather by ZIP code!");
   }
 };
 
